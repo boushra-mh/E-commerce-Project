@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Requests\ProductRequest;
 
 class ProductController_old extends Controller
 {
@@ -27,7 +28,7 @@ class ProductController_old extends Controller
         return response()->json([$product_names]);
         //LINK -  dd($responce);
     }
-    public function store(Request $request) {}
+    public function store(ProductRequest $request) {}
     public function showByID($id = null)
     {
 

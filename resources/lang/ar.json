@@ -1,0 +1,21 @@
+{
+    "Product_created_successfully":"تم انشاء المنتج بنجاح",
+    "Products_retrieved_successfully":"تم استرجاع المنتجات بنجاح",
+    "The_Product_Is_Deleted_Successfully":"تم حذف المنتج بنجاح",
+    "This_Product_Not_found":"المنتج غير موجود",
+    "Product_retrieved_successfully":"تم استرجاع المنتج بنجاح",
+    "The_Product_restored_Successfully":"تم اعادة تخزين المنتج بنجاح",
+    "Product_updated_successfully":"تم تحديث المنتج بنجاح",
+    "Categories_retrieved_successfully":"تم استرجاع الاصناف بنجاح ",
+    "Category_stored_successfully":"تم تخزين الصنف بنجاح",
+    "Category_retrieved_successfully":"تم استرجاع الصنف بنجاح ",
+    "This_category_Not_found":"الصنف غير موجود",
+    "Category_updated_successfully":"تم تحديث الصنف بنجاح",
+    "Category_deleted_successfully":"تم حذف الصنف بنجاح",
+    "you_must_enter_the_name_of_category":"يجب عليك ادخال اسم الصنف !",
+    "you_must_enter_the_name_of_product":"يجب عليك ادخال اسم المنتج !",
+    "the price_should_be_number_betwwen_10->1000":"يجب أن يكون السعر بين ال$10 وال$1000",
+    "please_enter_the_description_with_lowercase_letters":"رجاء، عليك ادخال وصف المنتج بأحرف صغيرة",
+    "Order_stored_successfully":"تم انشاء هذا الطلب بنجاح "
+
+}
