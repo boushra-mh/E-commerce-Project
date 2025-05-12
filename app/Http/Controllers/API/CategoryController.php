@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\API\ApiController;
-use App\Http\Resources\CategoryResource;
 use App\Http\Requests\CategoryRequest;
-
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
-
 use App;
 
 class CategoryController extends ApiController
@@ -26,11 +24,16 @@ class CategoryController extends ApiController
     } */
     public function index(Request $request)
     {
-        $categories = Category::orderBy('id', 'Asc')->with('products')->get();
+        // $categories = Category::orderBy('id', 'Asc')->with('products')->get();
+        $categories = Category::whereRelation('products', 'price', 675.98)
+            ->with(['products' => function ($query) {
+                $query->where('price', 675.98);
+            }])
+            ->paginate();
 
         return $this->sendResponce(
             CategoryResource::collection($categories),
-            __('Categories_retrieved_successfully')
+            __('Categories_retrieved_successfully'),200,true
         );
     }
 
@@ -47,7 +50,6 @@ class CategoryController extends ApiController
      */
     public function store(CategoryRequest $request)
     {
-       
         $category = Category::create($request->validated());
 
         $category->setTranslations('name', [

@@ -39,7 +39,7 @@ class ProductController extends ApiController
 
         // NOTE - after with()fun we need ->get() because is acollection .
 
-        $products = $products->with('categories')->get();  /* ->pluck('name', 'id') */
+        $products = $products->with('categories')->paginate();  /* ->pluck('name', 'id') */
 
         // REVIEW -  $products = $products->filter(fn($product) => $product->price > 1000);
 
@@ -55,7 +55,7 @@ class ProductController extends ApiController
 
         return $this->sendResponce(
             ProductResource::collection($products),
-            __('Products_retrieved_successfully')
+            __('Products_retrieved_successfully'),200,true
         );
     }
 
