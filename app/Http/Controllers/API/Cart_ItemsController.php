@@ -4,10 +4,12 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\API\ApiController;
 use App\Models\Cart_Item;
+use App\Traits\ResponceTrait;
 use Illuminate\Http\Request;
 
 class Cart_ItemsController extends ApiController
 {
+    use ResponceTrait;
 
     /**
      * Display a listing of the resource.

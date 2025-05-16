@@ -6,11 +6,13 @@ use App\Http\Controllers\API\ApiController;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
+use App\Traits\ResponceTrait;
 use Illuminate\Http\Request;
 use App;
 
 class CategoryController extends ApiController
 {
+    use ResponceTrait;
     /**
      * Display a listing of the resource.
      */
@@ -24,6 +26,8 @@ class CategoryController extends ApiController
     } */
     public function index(Request $request)
     {
+        $title = "Hello EverBody In Any Where In The World";
+      dd ( make_slug($title));
         // $categories = Category::orderBy('id', 'Asc')->with('products')->get();
         $categories = Category::whereRelation('products', 'price', 675.98)
             ->with(['products' => function ($query) {

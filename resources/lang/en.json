@@ -16,6 +16,11 @@
     "you_must_enter_the_name_of_product":"you must enter the name of product",
     "the price_should_be_number_betwwen_10->1000":"the price should be number betwwen 10$ and 1000$",
     "please_enter_the_description_with_lowercase_letters":"please enter the description with lowercase letters",
-    "Order_stored_successfully":"This Order Created Successfully"
+    "Order_stored_successfully":"This Order Created Successfully",
+    "you_must_enter_the_title_of_color":"you must enter the title of color",
+    "you_should_enter_the_status_of_color":"you should enter the status of color",
+    "this_color_stored_successfully":"this color stored successfully"
+
+
 
 }

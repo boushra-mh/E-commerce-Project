@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\Cart_ItemsController;
 use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\Api\ColorController;
 use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\UserController;
@@ -30,6 +31,8 @@ Route::resource('cart_items', Cart_ItemsController::class);
 Route::resource('orders', OrderController::class);
 
 Route::resource('users', UserController::class);
+
+Route::resource('colors', ColorController::class);
 
 Route::get('retrieve_active_records', [ProductController::class, 'retrieve_active_records']);
 

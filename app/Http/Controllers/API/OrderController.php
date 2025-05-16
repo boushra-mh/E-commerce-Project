@@ -6,9 +6,11 @@ use App\Http\Requests\OrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\Product;
+use App\Traits\ResponceTrait;
 
 class OrderController extends ApiController
 {
+    use ResponceTrait;
     /**
      * Display a listing of the resource.
      */
@@ -29,26 +31,26 @@ class OrderController extends ApiController
     {
 
 
-    $total = 0;        
-    $quantity = 0;     
-    $productsData = $request->input('products');  
+    $total = 0;
+    $quantity = 0;
+    $productsData = $request->input('products');
 
-    
+
     foreach ($productsData as $item) {
-      
+
         $product = Product::find($item['id']);
 
-     
-        $price = $product->getRawOriginal('price');  
-        $productQuantity = $item['quantity'];  
+
+        $price = $product->getRawOriginal('price');
+        $productQuantity = $item['quantity'];
 
         $total += $price * $productQuantity;
 
-       
+
         $quantity += $productQuantity;
     }
 
-   
+
     $tax = $total * 0.15;
 
     $order = Order::create([
@@ -65,7 +67,7 @@ class OrderController extends ApiController
         ]);
     }
 
-   
+
     return $this->sendResponce(
         new OrderResource($order->load('Orderproducts')),
         __('Order_stored_successfully'),

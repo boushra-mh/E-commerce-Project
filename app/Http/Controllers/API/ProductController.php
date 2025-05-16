@@ -6,11 +6,13 @@ use App\Http\Controllers\API\ApiController;
 use App\Http\Resources\ProductResource;
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
+use App\Traits\ResponceTrait;
 use Illuminate\Http\Request;
 use App;
 
 class ProductController extends ApiController
 {
+    use ResponceTrait;
     /**
      * Display a listing of the resource.
      */
@@ -72,7 +74,7 @@ class ProductController extends ApiController
      */
     public function store(ProductRequest $request)
     {
-     
+
 
         $category_ids = $request->category_ids;  // REVIEW  - This ids will i hold from request as array .
 

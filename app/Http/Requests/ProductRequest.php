@@ -2,7 +2,8 @@
 
 namespace App\Http\Requests;
 use App\Http\Requests\APIRequest;
-
+use App\Enums\ProductStatus;
+use Illuminate\Validation\Rules\Enum;
 
 class ProductRequest extends APIRequest
 {
@@ -25,6 +26,7 @@ class ProductRequest extends APIRequest
             'name_ar' => 'required|string|max:255|',
             'name_en' => 'required|string|max:255|',
             'price' => 'numeric|between:10,10000000',
+            'status' => ['required', new Enum(ProductStatus::class)],
             'description' => 'lowercase',
         ];
     }
@@ -33,7 +35,7 @@ class ProductRequest extends APIRequest
     {
         return [
             'name_ar.required' => 'you must enter the name of product',
-            'name_en' => 'you must enter the name of produc',
+            'name_en' => 'you must enter the name of product',
             'price.*' => 'the price should be number betwwen 10->1000',
             'description.lowercase' => 'please enter the description with lowercase letters',
         ];
