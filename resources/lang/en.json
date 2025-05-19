@@ -19,7 +19,14 @@
     "Order_stored_successfully":"This Order Created Successfully",
     "you_must_enter_the_title_of_color":"you must enter the title of color",
     "you_should_enter_the_status_of_color":"you should enter the status of color",
-    "this_color_stored_successfully":"this color stored successfully"
+    "this_color_stored_successfully":"this color stored successfully",
+    "this_color_retrieved_successfully":"this color retrieved successfully",
+    "this_colo isnt found":"this color isnt found",
+    "these_colors_retrieved_successfully":"these colors retrieved successfully",
+    "this_color_updated_successfully":"this color updated successfully",
+    "you_cannot_update_this_color_!":"you cannot update this color !",
+    "this_color_deleted_successfully":"this color deleted successfully",
+    "this_isnt_exist":" you cannot delete this color"
 
 
 

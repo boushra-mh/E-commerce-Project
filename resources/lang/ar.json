@@ -19,6 +19,13 @@
 	"Order_stored_successfully": "تم انشاء هذا الطلب بنجاح ",
 	"you_must_enter_the_title_of_color": "يجب عليك إدخال اللون ",
 	"you_should_enter_the_status_of_color": "يجب عليك إدخال حالة اللون",
-    "this_color_stored_successfully":"تم اضافة هذا اللون بنجاح "
+    "this_color_stored_successfully":"تم اضافة هذا اللون بنجاح ",
+    "this_color_retrieved_successfully":"تم عرض هذا اللون بنجاح",
+    "this_color_isnt_found":"هذا اللون غير موجود !",
+    "these_colors_retrieved_successfully":"تم عرض الألوان بنجاح",
+    "this_color_updated_successfully":"تم تحديث هذا اللون بنجاح",
+    "you_cannot_update_this_color_!":" أعتذر لايمكنك تحديث هذا اللون !",
+    "this_color_deleted_successfully":"تم حذف اللون بنجاح",
+    "this_isnt_exist":" !أعتذر لايمكنك حذف هذا اللون موجود "
 
 }

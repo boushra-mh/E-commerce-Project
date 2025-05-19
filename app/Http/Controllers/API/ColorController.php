@@ -7,17 +7,23 @@ use App\Http\Requests\ColorRequest;
 use App\Http\Resources\ColorResource;
 use App\Models\Color;
 use App\Traits\ResponceTrait;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 class ColorController extends Controller
 {
     use ResponceTrait;
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $colors = Color::paginate();
+        return $this->sendResponce(ColorResource::collection($colors),
+            __('these_colors_retrieved_successfully'),
+            200,
+            true);
     }
 
     /**
@@ -25,21 +31,20 @@ class ColorController extends Controller
      */
     public function store(ColorRequest $request)
     {
-        $color=Color::create($request->validated());
-         $color->setTranslations('title', [
+        $color = Color::create($request->validated());
+        $color->setTranslations('title', [
             'en' => $request->title_en,
             'ar' => $request->title_ar
-         ]
-    ); 
-    
-          $color->setTranslations('status', [
+        ]);
+
+        $color->setTranslations('status', [
             'en' => $request->status_en,
             'ar' => $request->status_ar
-         ]);
-          $color->save();
+        ]);
+        $color->save();
         return $this->sendResponce(new ColorResource($color),
-        __('this_color_stored_successfully'),
-        201);
+            __('this_color_stored_successfully'),
+            201);
     }
 
     /**
@@ -47,15 +52,43 @@ class ColorController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $color_id = Color::find($id);
+        if ($color_id) {
+            return $this->sendResponce(new ColorResource($color_id),
+                __('this_color_retrieved_successfully'),
+                200);
+        } else {
+            return $this->sendError(__('this_color_isnt_found'));
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ColorRequest $request, string $id)
     {
-        //
+        $color = Color::find($id);
+        if ($color) {
+            if ($request->has('title_ar')) {
+                $color->setTranslation('title', 'ar', $request->title_ar);
+            }
+            if ($request->has('title_en')) {
+                $color->setTranslation('title', 'en', $request->title_en);
+            }
+            if ($request->has('status_ar')) {
+                $color->setTranslation('status', 'ar', $request->status_ar);
+            }
+            if ($request->has('status_en')) {
+                $color->setTranslation('status', 'en', $request->status_en);
+            }
+            $color->save();
+            return $this->sendResponce(new ColorResource($color),
+            __('this_color_updated_successfully'),
+            200);
+        }
+        else{
+            return $this->sendError(__('you_cannot_update_this_color_!'));
+        }
     }
 
     /**
@@ -63,6 +96,14 @@ class ColorController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $color=Color::find($id);
+        if($color)
+        {
+            $color->delete();
+            return $this->sendResponce(null,
+            __('this_color_deleted_successfully'),200);
+        }
+        else
+        return $this->sendError(__('this_isnt_exist'));
     }
 }
