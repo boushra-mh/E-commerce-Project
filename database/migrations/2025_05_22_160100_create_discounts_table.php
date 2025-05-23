@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('colors', function (Blueprint $table) {
+        Schema::create('discounts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-        $table->enum('status',['active','Inactive']);
+            $table->string('status',['active','inactive']);
+            $table->date('start_date');
+            $table->string('type',['fixed','percentage']);
+            $table->date('end_date');
+            $table->decimal('value');
             $table->timestamps();
         });
     }
@@ -24,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('colors');
+        Schema::dropIfExists('discounts');
     }
 };

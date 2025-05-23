@@ -7,11 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use App\Enums\ProductStatus;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Translatable\HasTranslations;
 
-class Product extends Model
+class Product extends Model implements HasMedia
 {
     use HasTranslations;
+    use InteractsWithMedia;
     use HasFactory;
     use SoftDeletes;
     public $translatable = ['name', 'description'];
@@ -20,7 +23,8 @@ class Product extends Model
         'name',
         'price',
         'description',
-        'status'
+        'status',
+        'discount_id'
 
     ];
     protected $casts=[
@@ -29,6 +33,11 @@ class Product extends Model
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'category_products');
+    }
+
+    public function sizes()
+    {
+        return $this->hasMany(ProductSize::class);
     }
     public function orders()
     {

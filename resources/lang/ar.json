@@ -26,6 +26,13 @@
     "this_color_updated_successfully":"تم تحديث هذا اللون بنجاح",
     "you_cannot_update_this_color_!":" أعتذر لايمكنك تحديث هذا اللون !",
     "this_color_deleted_successfully":"تم حذف اللون بنجاح",
-    "this_isnt_exist":" !أعتذر لايمكنك حذف هذا اللون موجود "
+    "this_isnt_exist":" !أعتذر لايمكنك حذف هذا اللون موجود ",
+    "you_must_enter_the_title_of_product_size":" يجب عليك ادخال عنوان مناسب لحجم المنتج",
+    "please_enter_valid_status":"من فضلك ادخل حالة الحجم المتوافرة",
+    "you_must_enter_the_title_of_Discount":"من فضلك ادخل عنوان الحسم الذي تريده",
+    "please_enter_valid_status":"من فضلك ادخل حالة الحسم المتاحة",
+    "you_should_enter_valid_date":"من فضلك ادخل ناريخ متاح",
+    "please_enter_valid_type":"من فضلك ادخل نوع متاح ",
+    "discount_created_successfully":"تم اضافة الحسم بنجاح"
 
 }

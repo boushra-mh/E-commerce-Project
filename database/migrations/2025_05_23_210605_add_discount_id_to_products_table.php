@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('colors', function (Blueprint $table) {
-             $table->json('status')->nullable()->change();
+        Schema::table('products', function (Blueprint $table) {
+           $table->foreignId('discount_id')
+              ->nullable()
+              ->constrained('discounts')
+              ->nullOnDelete();
         });
     }
 
@@ -21,8 +24,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('colors', function (Blueprint $table) {
-            $table->enum('status', ['active', 'Inactive'])->change();
+        Schema::table('products', function (Blueprint $table) {
+              $table->dropForeign(['discount_id']);
+        $table->dropColumn('discount_id');
         });
     }
 };

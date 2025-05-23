@@ -85,6 +85,14 @@ class ProductController extends ApiController
         ]);
         $product->save();
 
+             if ($request->hasFile('images')) {
+        // إذا كانت 'images' مجموعة من الصور (multiple)
+        foreach ($request->file('images') as $image) {
+            $product->addMedia($image)->toMediaCollection('products');
+        }
+    }
+
+
         $product->categories()->attach($category_ids);  // REVIEW - attach: Adding Records to a Many-to-Many Relationship .
 
         // Return JSON response
@@ -134,6 +142,7 @@ class ProductController extends ApiController
             if ($request->has('name_en')) {
                 $product->setTranslation('name', 'en', $request->name_en);
             }
+
             $validator = \Validator::make(
                 $request->all(),
                 [

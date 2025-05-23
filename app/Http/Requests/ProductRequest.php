@@ -26,6 +26,7 @@ class ProductRequest extends APIRequest
             'name_ar' => 'required|string|max:255|',
             'name_en' => 'required|string|max:255|',
             'price' => 'numeric|between:10,10000000',
+            'discount_id' =>'   ',
             'status' => ['required', new Enum(ProductStatus::class)],
             'description' => 'lowercase',
         ];

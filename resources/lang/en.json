@@ -26,7 +26,13 @@
     "this_color_updated_successfully":"this color updated successfully",
     "you_cannot_update_this_color_!":"you cannot update this color !",
     "this_color_deleted_successfully":"this color deleted successfully",
-    "this_isnt_exist":" you cannot delete this color"
+    "this_isnt_exist":" you cannot delete this color",
+    "you_must_enter_the_title_of_Discount":"you must enter the title of Discount",
+    "please_enter_valid_status":"please enter valid status",
+    "you_should_enter_valid_date":"you should enter valid date",
+    "please_enter_valid_type":"please enter valid type",
+    "you_must_enter_the_title_of_product_size":"you must enter the title of product size",
+    "discount_created_successfully":"discount  created successfully"
 
 
 
