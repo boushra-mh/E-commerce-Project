@@ -24,6 +24,8 @@ class ProductResource extends JsonResource
             'discount_id'=>$this->discount_id,
             'image_url' => $this->getFirstMediaUrl('products'),
             'categories' => CategoryResource::collection($this->whenLoaded('categories')),
+            'colors' => ColorResource::collection($this->whenLoaded('colors')),
+            'sizes' => ProductSizeResource::collection($this->whenLoaded('sizes')),
             'created_at' => $this->created_at?->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at?->format('Y-m-d H:i:s'),
             'deleted_at' => $this->whenNotNull($this->deleted_at),

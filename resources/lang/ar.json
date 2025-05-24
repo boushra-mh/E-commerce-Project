@@ -33,6 +33,13 @@
     "please_enter_valid_status":"من فضلك ادخل حالة الحسم المتاحة",
     "you_should_enter_valid_date":"من فضلك ادخل ناريخ متاح",
     "please_enter_valid_type":"من فضلك ادخل نوع متاح ",
-    "discount_created_successfully":"تم اضافة الحسم بنجاح"
+    "discount_created_successfully":"تم اضافة الحسم بنجاح",
+    "discount_retreived_successfully":"تم استرجاع الحسومات بنجاح",
+    "discount_updated_successfully":"ت تحديث الحسم بنجاح",
+    "you_cannot_update_this_discount_!":"لايمكنك تحديث الحسم انه غير موجود ",
+    "active":"مفعل",
+    "inactive":"غير مفعل"
+ 
+
 
 }

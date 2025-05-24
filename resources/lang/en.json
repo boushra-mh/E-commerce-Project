@@ -32,7 +32,10 @@
     "you_should_enter_valid_date":"you should enter valid date",
     "please_enter_valid_type":"please enter valid type",
     "you_must_enter_the_title_of_product_size":"you must enter the title of product size",
-    "discount_created_successfully":"discount  created successfully"
+    "discount_created_successfully":"discount  created successfully",
+    "discount_retreived_successfully":"discount retreived successfully",
+    "discount_updated_successfully":"discount updated successfully",
+    "you_cannot_update_this_discount_!":"you cannot update this discount !"
 
 
 

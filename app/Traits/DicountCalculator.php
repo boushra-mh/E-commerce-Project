@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 
-use App\Enums\TypeDiscountEnums;
 use App\Models\Discount;
 
 trait DicountCalculator

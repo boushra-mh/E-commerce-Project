@@ -7,8 +7,7 @@ use App\Http\Requests\ColorRequest;
 use App\Http\Resources\ColorResource;
 use App\Models\Color;
 use App\Traits\ResponceTrait;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
+
 
 class ColorController extends Controller
 {
@@ -37,10 +36,6 @@ class ColorController extends Controller
             'ar' => $request->title_ar
         ]);
 
-        $color->setTranslations('status', [
-            'en' => $request->status_en,
-            'ar' => $request->status_ar
-        ]);
         $color->save();
         return $this->sendResponce(new ColorResource($color),
             __('this_color_stored_successfully'),
@@ -75,12 +70,7 @@ class ColorController extends Controller
             if ($request->has('title_en')) {
                 $color->setTranslation('title', 'en', $request->title_en);
             }
-            if ($request->has('status_ar')) {
-                $color->setTranslation('status', 'ar', $request->status_ar);
-            }
-            if ($request->has('status_en')) {
-                $color->setTranslation('status', 'en', $request->status_en);
-            }
+           
             $color->save();
             return $this->sendResponce(new ColorResource($color),
             __('this_color_updated_successfully'),

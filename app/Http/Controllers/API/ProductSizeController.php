@@ -7,7 +7,7 @@ use App\Http\Requests\ProductSizeRequest;
 use App\Http\Resources\ProductSizeResource;
 use App\Models\ProductSize;
 use App\Traits\ResponceTrait;
-use Illuminate\Http\Request;
+
 
 class ProductSizeController extends Controller
 {
@@ -65,9 +65,30 @@ class ProductSizeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ProductSizeRequest $request, string $id)
     {
-        //
+        $size=ProductSize::find($id);
+
+        if($size)
+        {
+            if($request->has('title_en'))
+        {
+             $size->setTranslation('title','en',$request->title_en);
+        }
+         if($request->has('title_ar'))
+        {
+             $size->setTranslation('title','ar',$request->title_ar);
+        }
+        $size->update($request->validated());
+
+        return $this->sendResponce(new ProductSizeResource($size),
+        __('size_updated_successfully'),
+        200);
+
+        }
+        else
+        return $this->sendError(null,__('you_cannot_update_this_size_!'));
+        
     }
 
     /**
@@ -75,6 +96,16 @@ class ProductSizeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $size=ProductSize::findOrFail($id);
+
+        if( $size)
+        {
+             $size->delete();
+             return $this->sendResponce(null,__('this_size_deleted_successfully'));
+        }
+        else
+        {
+            return $this->sendError(null,__('this_size_isnt_found'));
+        }
     }
 }

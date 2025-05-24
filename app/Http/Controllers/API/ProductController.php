@@ -41,7 +41,7 @@ class ProductController extends ApiController
 
         // NOTE - after with()fun we need ->get() because is acollection .
 
-        $products = $products->with('categories')->paginate();  /* ->pluck('name', 'id') */
+        $products = $products->with('categories','colors','sizes')->paginate();  /* ->pluck('name', 'id') */
 
         // REVIEW -  $products = $products->filter(fn($product) => $product->price > 1000);
 
@@ -94,6 +94,12 @@ class ProductController extends ApiController
 
 
         $product->categories()->attach($category_ids);  // REVIEW - attach: Adding Records to a Many-to-Many Relationship .
+
+
+        $product->colors()->attach($request->color_ids);
+
+        $product->colors()->syncWithoutDetaching($request->color_ids);
+
 
         // Return JSON response
 

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\ColorsStatus;
+use App\Enums\StatusEnum;
 use App\Http\Requests\APIRequest;
 use Illuminate\Validation\Rules\Enum;
 
@@ -26,8 +27,8 @@ class ColorRequest extends APIRequest
         return [
         'title_en'=>'required|string',
         'title_ar'=>'required|string',
-        'status_en' => ['required', new Enum(ColorsStatus::class)],
-        'status_ar' => ['required', new Enum(ColorsStatus::class)],
+        'status' => ['required', new Enum(StatusEnum::class)],
+       
         ];
     }
 
@@ -37,8 +38,8 @@ class ColorRequest extends APIRequest
         [
             'title_en.required' => __('you_must_enter_the_title_of_color'),
             'title_ar.required' => __('you_must_enter_the_title_of_color'),
-            'status_en.required'=>__('you_should_enter_the_status_of_color'),
-            'status_ar.required'=>__('you_should_enter_the_status_of_color'),
+            'status.required'=>__('you_should_enter_the_status_of_color'),
+        
 
         ];
     }
