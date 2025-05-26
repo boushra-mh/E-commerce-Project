@@ -37,9 +37,15 @@
     "discount_retreived_successfully":"تم استرجاع الحسومات بنجاح",
     "discount_updated_successfully":"ت تحديث الحسم بنجاح",
     "you_cannot_update_this_discount_!":"لايمكنك تحديث الحسم انه غير موجود ",
+    "size_retreived_successfully":"تم استرجاع الاحجام المتوافرة بنجاح",
+    "size_stored_successfully":"تم تخزين الحجم  بنجاح",
+    "size_updated_successfully":"تم تحديث الحجم بنجاح",
+    "you_cannot_update_this_size_!":"عذراً لايمكنك تحديث هذا الحجم !",
+    "this_size_deleted_successfully":"تم حذف الحجم بنجاح",
+    "this_size_isnt_found":"هذا الحجم غير موجود",
     "active":"مفعل",
     "inactive":"غير مفعل"
- 
+
 
 
 }

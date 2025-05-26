@@ -23,5 +23,8 @@ class DatabaseSeeder extends Seeder
         Product::factory(20)->create()->each(function ($product) {
             $product->categories()->attach(Category::inRandomOrder()->first());
         });
+            $this->call([
+        AdminSeeder::class,
+    ]);
     }
 }

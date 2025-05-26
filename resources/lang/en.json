@@ -35,7 +35,14 @@
     "discount_created_successfully":"discount  created successfully",
     "discount_retreived_successfully":"discount retreived successfully",
     "discount_updated_successfully":"discount updated successfully",
-    "you_cannot_update_this_discount_!":"you cannot update this discount !"
+    "you_cannot_update_this_discount_!":"you cannot update this discount !",
+    "size_retreived_successfully":"size retreived successfully",
+    "size_stored_successfully":"size stored successfully",
+    "size_updated_successfully":"size updated successfully",
+    "you_cannot_update_this_size_!":"you cannot update this size !",
+    "this_size_deleted_successfully":"this size deleted successfully",
+    "this_size_isnt_found":"this size isnt found"
+
 
 
 

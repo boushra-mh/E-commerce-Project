@@ -20,7 +20,7 @@ class ProductController extends ApiController
     {
         $search = $request->search;
 
-        $products = new Product();
+        $products = Product::query();;
 
         if ($search != null) {
             $products = $products->where('name', 'like', '%' . $search . '%');
@@ -41,7 +41,7 @@ class ProductController extends ApiController
 
         // NOTE - after with()fun we need ->get() because is acollection .
 
-        $products = $products->with('categories','colors','sizes')->paginate();  /* ->pluck('name', 'id') */
+        $products = $products->with('discount','categories','colors','sizes')->paginate();  /* ->pluck('name', 'id') */
 
         // REVIEW -  $products = $products->filter(fn($product) => $product->price > 1000);
 

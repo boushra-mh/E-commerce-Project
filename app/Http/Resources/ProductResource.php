@@ -2,11 +2,14 @@
 
 namespace App\Http\Resources;
 
+use App\Traits\DisountCalculator;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductResource extends JsonResource
 {
+
+    use DisountCalculator;
     /**
      * Transform the resource into an array.
      *
@@ -14,14 +17,19 @@ class ProductResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+$price = (float) str_replace([',', '$'], '', $this->price);
 
+    $discount = $this->whenLoaded('discount');
+    //dd( $discount);
 
         return [
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->getTranslation('description', app()->getLocale()),
             'price' => $this->price,
-            'discount_id'=>$this->discount_id,
+            'price-after-discount'=>$this->calculateDiscountedPrice($price, $discount),
+            'discount' => new DiscountResource($this->discount),
+
             'image_url' => $this->getFirstMediaUrl('products'),
             'categories' => CategoryResource::collection($this->whenLoaded('categories')),
             'colors' => ColorResource::collection($this->whenLoaded('colors')),

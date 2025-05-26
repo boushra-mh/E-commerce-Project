@@ -26,7 +26,7 @@ class ProductSizeRequest extends APIRequest
             'title_ar'=>'required',
             'product_id'=>'required|exists:products,id',
             'status' => ['required', new Enum(StatusEnum::class)],
-            
+
         ];
     }
     public function messages()

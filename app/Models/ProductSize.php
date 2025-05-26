@@ -10,13 +10,13 @@ class ProductSize extends Model
 {
     use HasTranslations;
 
-    protected $fillable=['title','status','products_id'];
+    protected $fillable=['title','status','product_id'];
      public $translatable = ['title'];
 
  protected $casts=[
         'status'=>StatusEnum::class
     ];
-    
+
 
     public function product()
     {

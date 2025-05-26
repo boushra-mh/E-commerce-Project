@@ -47,10 +47,15 @@ class Product extends Model implements HasMedia
     {
         return $this->belongsToMany(Color::class,'product_colors');
     }
-    public function getPriceAttribute($price)
-    {
-        return '$' . number_format($price, 2);
-    }
+
+    public function discount()
+{
+    return $this->belongsTo(Discount::class);
+}
+    // public function getPriceAttribute($price)
+    // {
+    //     return '$' . number_format($price, 2);
+    // }
     public function getNameAttribute($name)
     {
         return ucfirst($name);

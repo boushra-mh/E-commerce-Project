@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductSizeResource extends JsonResource
+class AdminResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,12 +14,11 @@ class ProductSizeResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+         return [
             'id'=>$this->id,
-            'title'=>$this->title,
-            'status'=>$this->status,
-            'product_id'=>$this->product_id,
-            'product' => new ProductResource($this->whenLoaded('product')),
+            'name'=>$this->name,
+            'email'=>$this->email,
+            'access-token'=>$this->access_token
         ];
     }
 }
