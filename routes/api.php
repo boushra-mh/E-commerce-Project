@@ -22,9 +22,8 @@ Route::get('/user', function (Request $request) {
 //     Route::delete('/products/{id}', "destroy");
 //     Route::get('/products/{id?}', "show");
 // });
-Route::resource('products', ProductController::class)->missing(function (Request $request) {
-    return response()->json(['error Product not found. '], 484);
-});
+Route::resource('products', ProductController::class)->middleware('auth:admin');
+
 
 Route::resource('categories', CategoryController::class);
 

@@ -18,15 +18,15 @@ class AdminController extends Controller
     {
        $data = $request->validated();
 
-        $user = Admin::where('email',$data['email'])->first();
+        $admin = Admin::where('email',$data['email'])->first();
 
-        if(!Hash::check($data['password'] ,$user->password )){
+        if(!$admin || !Hash::check($data['password'] ,$admin->password )){
             return $this->sendError('Invalid credentials');
         }
 
-       $user->access_token = $user->createToken('user_token')->plainTextToken ;
+       $admin->access_token = $admin->createToken('admin_token')->plainTextToken ;
 
-        return $this->sendResponce(AdminResource::make($user),'User Logged in successfully');
+        return $this->sendResponce(AdminResource::make($admin),'User Logged in successfully');
 
     }
 
