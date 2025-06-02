@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Admin\Admin;
+namespace App\Http\Requests\Admin\Auth;
 
-use App\Enums\StatusEnum;
 use App\Http\Requests\APIRequest;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class AdminRequest extends APIRequest
+class LoginRequest extends APIRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,13 +21,11 @@ class AdminRequest extends APIRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-    {
-        return [
-             'name'=>'required|string',
+    {return [
+
             'email'=>'required|email',
-            'phone'=>'required|digits:10',
             'password'=>'required|min:8',
-            'status'=>[Rule::enum(StatusEnum::class)]
+           // 'phone'=>'required'
         ];
     }
 }

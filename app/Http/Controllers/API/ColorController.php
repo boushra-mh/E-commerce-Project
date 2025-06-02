@@ -30,11 +30,19 @@ class ColorController extends Controller
      */
     public function store(ColorRequest $request)
     {
+
         $color = Color::create($request->validated());
         $color->setTranslations('title', [
             'en' => $request->title_en,
             'ar' => $request->title_ar
         ]);
+         if ($request->hasFile('image')&& $request->file('image')->isValid()) {
+
+        $color
+            ->addMedia($request->file('image'))
+            ->toMediaCollection('main-image');
+
+    }
 
         $color->save();
         return $this->sendResponce(new ColorResource($color),
@@ -61,25 +69,42 @@ class ColorController extends Controller
      * Update the specified resource in storage.
      */
     public function update(ColorRequest $request, string $id)
-    {
-        $color = Color::find($id);
-        if ($color) {
-            if ($request->has('title_ar')) {
-                $color->setTranslation('title', 'ar', $request->title_ar);
-            }
-            if ($request->has('title_en')) {
-                $color->setTranslation('title', 'en', $request->title_en);
-            }
-           
-            $color->save();
-            return $this->sendResponce(new ColorResource($color),
-            __('this_color_updated_successfully'),
-            200);
-        }
-        else{
-            return $this->sendError(__('you_cannot_update_this_color_!'));
+{
+    $color = Color::find($id);
+
+    if (!$color) {
+        return $this->sendError(__('you_cannot_update_this_color_!'));
+    }
+
+    // تحديث الترجمة
+    if ($request->has('title_ar')) {
+        $color->setTranslation('title', 'ar', $request->title_ar);
+    }
+    if ($request->has('title_en')) {
+        $color->setTranslation('title', 'en', $request->title_en);
+    }
+
+
+    if ($request->has('status')) {
+        $color->status = $request->status;
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+
+        if ($image->isValid()) {
+            $color->addMedia($image)->toMediaCollection('main-image');
+        } else {
+            return response()->json(['error' => 'الصورة غير صالحة'], 422);
         }
     }
+
+    $color->save();
+
+    return $this->sendResponce(new ColorResource($color),
+        __('this_color_updated_successfully'),
+        200);
+}
+}
+
 
     /**
      * Remove the specified resource from storage.

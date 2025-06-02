@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\ProductMediaEnum;
 use App\Traits\DisountCalculator;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -19,7 +20,7 @@ class ProductResource extends JsonResource
     {
 $price = (float) str_replace([',', '$'], '', $this->price);
 
-    $discount = $this->whenLoaded('discount');
+   $discount = $this->relationLoaded('discount') ? $this->discount : null;
     //dd( $discount);
 
         return [
@@ -29,8 +30,11 @@ $price = (float) str_replace([',', '$'], '', $this->price);
             'price' => $this->price,
             'price-after-discount'=>$this->calculateDiscountedPrice($price, $discount),
             'discount' => new DiscountResource($this->discount),
-
-            'image_url' => $this->getFirstMediaUrl('products'),
+            'image' => $this->getFirstMediaUrl(ProductMediaEnum::MAIN_IMAGE->value) ,
+            'gallery' => $this->getMedia(ProductMediaEnum::GALLERY->value)
+                ->map(function($image){
+                return $image->original_url ;
+            }) ,
             'categories' => CategoryResource::collection($this->whenLoaded('categories')),
             'colors' => ColorResource::collection($this->whenLoaded('colors')),
             'sizes' => ProductSizeResource::collection($this->whenLoaded('sizes')),

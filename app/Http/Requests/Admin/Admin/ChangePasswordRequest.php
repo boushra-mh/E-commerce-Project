@@ -2,12 +2,10 @@
 
 namespace App\Http\Requests\Admin\Admin;
 
-use App\Enums\StatusEnum;
 use App\Http\Requests\APIRequest;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class AdminRequest extends APIRequest
+
+class ChangePasswordRequest extends APIRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,11 +23,9 @@ class AdminRequest extends APIRequest
     public function rules(): array
     {
         return [
-             'name'=>'required|string',
-            'email'=>'required|email',
-            'phone'=>'required|digits:10',
-            'password'=>'required|min:8',
-            'status'=>[Rule::enum(StatusEnum::class)]
+            'current_password'=>'required',
+            'new_password'=>'required|string|min:8',
+            'confirmed_password'=>'required|string|min:8'
         ];
     }
 }

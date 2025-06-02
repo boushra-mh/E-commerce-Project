@@ -3,16 +3,17 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\API\ApiController;
-use App\Http\Resources\ProductResource;
 use App\Http\Requests\ProductRequest;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Traits\ResponceTrait;
 use Illuminate\Http\Request;
-use App;
+use App\Enums\ProductMediaEnum;
 
 class ProductController extends ApiController
 {
     use ResponceTrait;
+
     /**
      * Display a listing of the resource.
      */
@@ -41,7 +42,7 @@ class ProductController extends ApiController
 
         // NOTE - after with()fun we need ->get() because is acollection .
 
-        $products = $products->with('discount','categories','colors','sizes')->paginate();  /* ->pluck('name', 'id') */
+        $products = $products->with('discount', 'categories', 'colors', 'sizes')->paginate();  /* ->pluck('name', 'id') */
 
         // REVIEW -  $products = $products->filter(fn($product) => $product->price > 1000);
 
@@ -57,7 +58,7 @@ class ProductController extends ApiController
 
         return $this->sendResponce(
             ProductResource::collection($products),
-            __('Products_retrieved_successfully'),200,true
+            __('Products_retrieved_successfully'), 200, true
         );
     }
 
@@ -74,8 +75,6 @@ class ProductController extends ApiController
      */
     public function store(ProductRequest $request)
     {
-
-
         $category_ids = $request->category_ids;  // REVIEW  - This ids will i hold from request as array .
 
         $product = Product::create($request->validated());
@@ -84,22 +83,29 @@ class ProductController extends ApiController
             'ar' => $request->name_ar
         ]);
         $product->save();
-
-             if ($request->hasFile('images')) {
-        // إذا كانت 'images' مجموعة من الصور (multiple)
-        foreach ($request->file('images') as $image) {
-            $product->addMedia($image)->toMediaCollection('products');
+          if ($request->hasFile('image')  && $request->file('image')->isValid()) {
+           $product
+                ->addMedia($request->file('image'))
+                ->toMediaCollection('main-image');
         }
-    }
+
+
+
+        if ($request->hasFile('images')) {
+            // إذا كانت 'images' مجموعة من الصور (multiple)
+            foreach ($request->file('images') as $image) {
+                  if ($image && $image->isValid()) {
+            $product->addMedia($image)->toMediaCollection(ProductMediaEnum::GALLERY->value);
+        }
+            }
+        }
 
 
         $product->categories()->attach($category_ids);  // REVIEW - attach: Adding Records to a Many-to-Many Relationship .
 
-
         $product->colors()->attach($request->color_ids);
 
         $product->colors()->syncWithoutDetaching($request->color_ids);
-
 
         // Return JSON response
 
@@ -138,52 +144,43 @@ class ProductController extends ApiController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        $product = Product::find($id);
-        if ($product) {
-            if ($request->has('name_ar')) {
-                $product->setTranslation('name', 'ar', $request->name_ar);
-            }
-            if ($request->has('name_en')) {
-                $product->setTranslation('name', 'en', $request->name_en);
-            }
 
-            $validator = \Validator::make(
-                $request->all(),
-                [
-                    'name_ar' => 'required|string|max:255|',
-                    'name_en' => 'required|string|max:255|',
-                    'price' => 'numeric|between:10,10000000',
-                    'description' => 'lowercase',
-                ],
-                [
-                    'name_ar.required' => __('you_must_enter_the_name_of_product'),
-                    'name_en.required' => __('you_must_enter_the_name_of_product'),
-                    'price.*' => __('the price_should_be_number_betwwen_10->1000'),
-                    'description.lowercase' => __('please_enter_the_description_with_lowercase_letters'),
-                ]
-            );
+   public function update(ProductRequest $request, string $id)
+{
+    $product = Product::find($id);
+    if (!$product) {
+        return $this->sendError(__('The_Product_cant_updated_or_not_Found'));
+    }
 
-            if ($validator->fails()) {
-                return $this->sendError($validator->messages()->first());
-            }
+    if ($request->has('name_ar')) {
+        $product->setTranslation('name', 'ar', $request->name_ar);
+    }
+    if ($request->has('name_en')) {
+        $product->setTranslation('name', 'en', $request->name_en);
+    }
 
-            $category_ids = $request->category_ids;
+    $product->update($request->validated());
 
-            // TODO -  $product->categories()->detach($category_ids); //REVIEW - detach: Removing Records from a Many-to-Many Relationship
+    $category_ids = $request->category_ids;
+    $product->categories()->sync($category_ids);
 
-            $product->categories()->sync($category_ids);
+    if ($request->hasFile('image')) {
+        $product
+            ->addMedia($request->file('image'))
+            ->toMediaCollection('main-image');
+    }
 
-
-            return $this->sendResponce(
-                new ProductResource($product),
-                __('Product_updated_successfully')
-            );
-        } else {
-            return $this->sendError(__('The_Product_cant_updated_or_not_Found'));
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $image) {
+            $product->addMedia($image)->toMediaCollection(ProductMediaEnum::GALLERY->value);
         }
     }
+
+    return $this->sendResponce(
+        new ProductResource($product),
+        __('Product_updated_successfully')
+    );
+}
 
     /**
      * Remove the specified resource from storage.

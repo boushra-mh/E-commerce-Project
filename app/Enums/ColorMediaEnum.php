@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums\Enums\Media;
+namespace App\Enums;
 
 enum ColorMediaEnum : string
 {

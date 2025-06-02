@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+
+use App\Enums\ProductMediaEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Enums\ProductStatus;
@@ -64,5 +66,15 @@ class Product extends Model implements HasMedia
     {
 
         $this->attributes['name'] = ucfirst($name);
+    }
+     public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection(ProductMediaEnum::MAIN_IMAGE->value)
+            ->useDisk(ProductMediaEnum::MAIN_IMAGE->disk())
+            ->singleFile();
+              $this->addMediaCollection(ProductMediaEnum::GALLERY->value)
+            ->useDisk(ProductMediaEnum::GALLERY->disk())
+            ;
+
     }
 }

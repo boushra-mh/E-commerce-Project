@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\ColorMediaEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,6 +19,7 @@ class ColorResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'status' => $this->status,
+            'image' => $this->getFirstMediaUrl(ColorMediaEnum::MAIN_IMAGE->value) ,
             'created_at' => $this->created_at?->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at?->format('Y-m-d H:i:s'),
             'deleted_at' => $this->whenNotNull($this->deleted_at),

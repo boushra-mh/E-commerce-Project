@@ -14,8 +14,8 @@ public function label()
 
        return match ($this) {
 
-            self::Active => __('active'),
-            self::InActive => __('inactive'),
+            self::Active => 'active',
+            self::InActive => 'inactive',
 
 
         };

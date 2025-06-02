@@ -1,47 +1,59 @@
 <?php
-
 namespace App\Http\Controllers\Admin\Auth;
 
+use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Admin\AdminRequest;
-use App\Http\Resources\Admin\AdminResource;
+use App\Http\Resources\Admin\Admin\AdminResource;
 use App\Models\Admin;
 use App\Traits\ResponceTrait;
-use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
-
-
     use ResponceTrait;
-    public function login(AdminRequest $request)
+
+    public function index()
     {
-       $data = $request->validated();
-
-        $admin = Admin::where('email',$data['email'])->first();
-
-        if(!$admin || !Hash::check($data['password'] ,$admin->password )){
-            return $this->sendError('Invalid credentials');
-        }
-
-       $admin->access_token = $admin->createToken('admin_token')->plainTextToken ;
-
-        return $this->sendResponce(AdminResource::make($admin),'User Logged in successfully');
-
+        $admins = Admin::paginate();
+        return $this->sendResponce(AdminResource::collection($admins),
+            'Admins retreived Successfully',
+            200,
+            true);
     }
 
-    public function logout()
+    public function store(AdminRequest $request)
     {
-        $user=auth('admin')->user();
-            //        return $user->tokens()->get();
+        $admin = Admin::create($request->validated());
 
-        // delete all tokens
-//        $user->tokens()->delete() ;
+        return $this->sendResponce(new AdminResource($admin),
+            'Admin stored Successfully');
+    }
 
-        // remove received token
-        $user->currentAccessToken()->delete();
+    public function show($id)
+    {
+        $admin = Admin::findOrFail($id);
+        return $this->sendResponce(new AdminResource($admin),
+            'admin retreived successfully');
+    }
 
-        return $this->sendResponce(null ,'user logout successfully');
+    public function toggleStatus($id)
+    {
+        $adminStatusId = auth('admin')->id();
 
+        if ($adminStatusId == $id) {
+            return $this->sendError("You can't change Status");
+        }
+
+        $admin = Admin::findOrFail($id);
+
+        if ($admin->status == StatusEnum::Active) {
+            $admin->status = StatusEnum::InActive;
+        } elseif($admin->status == StatusEnum::InActive) {
+
+              $admin->status = StatusEnum::Active;
+        }
+
+        $admin->save();
+        return $this->sendResponce(new AdminResource($admin),'Status Updated Successfully');
     }
 }
