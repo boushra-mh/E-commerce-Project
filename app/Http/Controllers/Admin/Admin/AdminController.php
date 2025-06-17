@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\Admin\Auth;
+namespace App\Http\Controllers\Admin\Admin;
 
 use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;

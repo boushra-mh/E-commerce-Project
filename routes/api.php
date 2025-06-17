@@ -16,7 +16,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-Route::resource('products', ProductController::class)->middleware('auth:admin');
+Route::resource('products', ProductController::class);
 
 
 Route::resource('categories', CategoryController::class);

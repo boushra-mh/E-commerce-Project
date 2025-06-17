@@ -9,10 +9,18 @@ use App\Models\Product;
 use App\Traits\ResponceTrait;
 use Illuminate\Http\Request;
 use App\Enums\ProductMediaEnum;
+use App\Services\ProductService;
 
 class ProductController extends ApiController
 {
     use ResponceTrait;
+    protected $productService;
+
+    public function __construct(ProductService $productService)
+    {
+
+        $this->productService = $productService;
+    }
 
     /**
      * Display a listing of the resource.
@@ -147,34 +155,36 @@ class ProductController extends ApiController
 
    public function update(ProductRequest $request, string $id)
 {
-    $product = Product::find($id);
-    if (!$product) {
-        return $this->sendError(__('The_Product_cant_updated_or_not_Found'));
-    }
+    $product=$this->productService->update($id, $request->all());
+    $this->productService->updateProductCategories($product,$request->category_ids);
+    // $product = Product::find($id);
+    // if (!$product) {
+    //     return $this->sendError(__('The_Product_cant_updated_or_not_Found'));
+    // }
 
-    if ($request->has('name_ar')) {
-        $product->setTranslation('name', 'ar', $request->name_ar);
-    }
-    if ($request->has('name_en')) {
-        $product->setTranslation('name', 'en', $request->name_en);
-    }
+    // if ($request->has('name_ar')) {
+    //     $product->setTranslation('name', 'ar', $request->name_ar);
+    // }
+    // if ($request->has('name_en')) {
+    //     $product->setTranslation('name', 'en', $request->name_en);
+    // }
 
-    $product->update($request->validated());
+    // $product->update($request->validated());
 
-    $category_ids = $request->category_ids;
-    $product->categories()->sync($category_ids);
+    // $category_ids = $request->category_ids;
+    // $product->categories()->sync($category_ids);
 
-    if ($request->hasFile('image')) {
-        $product
-            ->addMedia($request->file('image'))
-            ->toMediaCollection('main-image');
-    }
+    // if ($request->hasFile('image')) {
+    //     $product
+    //         ->addMedia($request->file('image'))
+    //         ->toMediaCollection('main-image');
+    // }
 
-    if ($request->hasFile('images')) {
-        foreach ($request->file('images') as $image) {
-            $product->addMedia($image)->toMediaCollection(ProductMediaEnum::GALLERY->value);
-        }
-    }
+    // if ($request->hasFile('images')) {
+    //     foreach ($request->file('images') as $image) {
+    //         $product->addMedia($image)->toMediaCollection(ProductMediaEnum::GALLERY->value);
+    //     }
+    // }
 
     return $this->sendResponce(
         new ProductResource($product),
@@ -187,14 +197,9 @@ class ProductController extends ApiController
      */
     public function destroy(string $id)
     {
-        $product = Product::find($id);
-        if ($product) {
-            $product->delete();
-
+         $this->productService->delete($id);
             return $this->sendResponce(null, __('The_Product_Is_Deleted_Successfully'));
-        } else {
-            return $this->sendError('This Product Not found', 404);
-        }
+
     }
 
     public function retrieve_active_records()

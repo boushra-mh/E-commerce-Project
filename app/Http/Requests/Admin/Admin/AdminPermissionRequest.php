@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests\Admin\Admin;
 
-use App\Enums\StatusEnum;
+use App\Enums\PermissionEnum;
 use App\Http\Requests\APIRequest;
 use Illuminate\Validation\Rule;
 
-class AdminRequest extends APIRequest
+class AdminPermissionRequest extends APIRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,8 @@ class AdminRequest extends APIRequest
     public function rules(): array
     {
         return [
-             'name'=>'required|string',
-            'email'=>'required|email',
-            'phone'=>'required|digits:10',
-            'password'=>'required|min:8',
-            'status'=>[Rule::enum(StatusEnum::class)]
+            'permission_names' => ['required','array','min:1'],
+            'permission_names.*' => ['required',Rule::enum(PermissionEnum::class)]
         ];
     }
 }

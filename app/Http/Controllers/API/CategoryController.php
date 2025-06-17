@@ -9,10 +9,17 @@ use App\Models\Category;
 use App\Traits\ResponceTrait;
 use Illuminate\Http\Request;
 use App;
+use App\Services\CategoryService;
 
 class CategoryController extends ApiController
 {
     use ResponceTrait;
+
+    protected $categoryService;
+    public function __construct(CategoryService $categoryService)
+    {
+        $this->categoryService=$categoryService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -26,14 +33,10 @@ class CategoryController extends ApiController
     } */
     public function index(Request $request)
     {
-        $title = "Hello EverBody In Any Where In The World";
-      dd ( make_slug($title));
+    //     $title = "Hello EverBody In Any Where In The World";
+    //   dd ( make_slug($title));
         // $categories = Category::orderBy('id', 'Asc')->with('products')->get();
-        $categories = Category::whereRelation('products', 'price', 675.98)
-            ->with(['products' => function ($query) {
-                $query->where('price', 675.98);
-            }])
-            ->paginate();
+        $categories = $this->categoryService->index();
 
         return $this->sendResponce(
             CategoryResource::collection($categories),
@@ -41,25 +44,9 @@ class CategoryController extends ApiController
         );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(CategoryRequest $request)
     {
-        $category = Category::create($request->validated());
-
-        $category->setTranslations('name', [
-            'en' => $request->name_en,
-            'ar' => $request->name_ar
-        ]);
+        $category = $this->categoryService->create($request->validated());
         $category->save();
 
         return $this->sendResponce(
@@ -86,36 +73,16 @@ class CategoryController extends ApiController
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(CategoryRequest $request, string $id)
     {
-        $category = Category::find($id);
-        if ($category) {
-            if ($request->has('name_ar')) {
-                $category->setTranslation('name', 'ar', $request->name_ar);
-            }
-            if ($request->has('name_en')) {
-                $category->setTranslation('name', 'en', $request->name_en);
-            }
-            $category->save();
+        $category =$this->categoryService->update($id, $request);
 
             return $this->sendResponce(
                 new CategoryResource($category),
                 __('Category_updated_successfully')
             );
-        } else {
-            return $this->sendError(__('This_category_Not_found'), 404);
-        }
+
     }
 
     /**
@@ -123,12 +90,7 @@ class CategoryController extends ApiController
      */
     public function destroy(string $id, Request $request)
     {
-        $category = Category::find($id);
-        if ($category) {
-            $category->delete();
+        $category = $this->categoryService->delete($id);
             return $this->sendResponce(null, __('Category_deleted_successfully'));
-        } else {
-            return $this->sendError(__('This_category_Not_found'), 404);
-        }
     }
 }

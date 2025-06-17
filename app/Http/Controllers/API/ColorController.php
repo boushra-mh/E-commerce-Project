@@ -6,19 +6,26 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ColorRequest;
 use App\Http\Resources\ColorResource;
 use App\Models\Color;
+use App\Services\ColorService;
 use App\Traits\ResponceTrait;
 
 
 class ColorController extends Controller
 {
     use ResponceTrait;
+    protected $colorService;
+
+    public function __construct(ColorService $colorService)
+    {
+        $this->colorService = $colorService;
+    }
 
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $colors = Color::paginate();
+        $colors = $this->colorService->index();
         return $this->sendResponce(ColorResource::collection($colors),
             __('these_colors_retrieved_successfully'),
             200,
@@ -31,18 +38,8 @@ class ColorController extends Controller
     public function store(ColorRequest $request)
     {
 
-        $color = Color::create($request->validated());
-        $color->setTranslations('title', [
-            'en' => $request->title_en,
-            'ar' => $request->title_ar
-        ]);
-         if ($request->hasFile('image')&& $request->file('image')->isValid()) {
+        $color =$this->colorService->create($request->validated());
 
-        $color
-            ->addMedia($request->file('image'))
-            ->toMediaCollection('main-image');
-
-    }
 
         $color->save();
         return $this->sendResponce(new ColorResource($color),
@@ -55,49 +52,19 @@ class ColorController extends Controller
      */
     public function show(string $id)
     {
-        $color_id = Color::find($id);
-        if ($color_id) {
-            return $this->sendResponce(new ColorResource($color_id),
+        $color= $this->colorService->getColorById($id);
+            return $this->sendResponce(new ColorResource($color),
                 __('this_color_retrieved_successfully'),
                 200);
-        } else {
-            return $this->sendError(__('this_color_isnt_found'));
-        }
     }
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(ColorRequest $request, string $id)
 {
-    $color = Color::find($id);
-
-    if (!$color) {
-        return $this->sendError(__('you_cannot_update_this_color_!'));
-    }
-
-    // تحديث الترجمة
-    if ($request->has('title_ar')) {
-        $color->setTranslation('title', 'ar', $request->title_ar);
-    }
-    if ($request->has('title_en')) {
-        $color->setTranslation('title', 'en', $request->title_en);
-    }
-
-
-    if ($request->has('status')) {
-        $color->status = $request->status;
-    if ($request->hasFile('image')) {
-        $image = $request->file('image');
-
-        if ($image->isValid()) {
-            $color->addMedia($image)->toMediaCollection('main-image');
-        } else {
-            return response()->json(['error' => 'الصورة غير صالحة'], 422);
-        }
-    }
-
-    $color->save();
+    $color = $this->colorService->update($id, $request->validated());
 
     return $this->sendResponce(new ColorResource($color),
         __('this_color_updated_successfully'),
@@ -111,14 +78,9 @@ class ColorController extends Controller
      */
     public function destroy(string $id)
     {
-        $color=Color::find($id);
-        if($color)
-        {
-            $color->delete();
+        $this->colorService->delete($id);
             return $this->sendResponce(null,
             __('this_color_deleted_successfully'),200);
-        }
-        else
-        return $this->sendError(__('this_isnt_exist'));
     }
+
 }

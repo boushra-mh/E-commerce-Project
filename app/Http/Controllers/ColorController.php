@@ -36,7 +36,7 @@ class ColorController extends Controller
      */
     public function show(Color $color)
     {
-        //
+        $color=$this->
     }
 
     /**
